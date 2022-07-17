@@ -2,9 +2,15 @@
 
 	<PropertyGroup Label="Identity">
 		<ProductName>Rem.Core.ComponentModel</ProductName>
+		<Description>
+			A lightweight library of component-model-like types and functionality that are useful in common .NET
+			programming scenarios.
+		</Description>
 		<RootNamespace>Rem.Core.ComponentModel</RootNamespace>
-		<Authors>Richard Munson</Authors>
-		<Version>0.1</Version>
+		<Authors>Richard E. Munson</Authors>
+		<Copyright>Richard E. Munson, 2022</Copyright>
+		<WebPage>https://github.com/rmunson27/core-componentmodel-net/</WebPage>
+		<Version>1.0</Version>
 	</PropertyGroup>
 
 	<PropertyGroup Label="Outputs">
