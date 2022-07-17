@@ -13,6 +13,9 @@ namespace Rem.Core.ComponentModel;
 /// </summary>
 public class PropertySetOutOfRangeException : PropertySetException
 {
+    /// <summary>
+    /// Gets the message for the exception.
+    /// </summary>
     public override string Message
         => ActualValue is null
             ? base.Message
@@ -50,9 +53,8 @@ public class PropertySetOutOfRangeException : PropertySetException
     /// <param name="message"></param>
     /// <param name="actualValue"></param>
     /// <param name="innerException"></param>
-    public PropertySetOutOfRangeException(
-        string message, object? actualValue, Exception innerException)
-        : base(FormatMessageWithActualValue(message, actualValue), innerException)
+    public PropertySetOutOfRangeException(string message, object? actualValue, Exception innerException)
+        : base(message, innerException)
     {
         this.ActualValue = actualValue;
     }
@@ -63,11 +65,10 @@ public class PropertySetOutOfRangeException : PropertySetException
     /// invalid value.
     /// </summary>
     /// <param name="message"></param>
-    /// <param name="actualValue"></param>
     /// <param name="propName"></param>
-    public PropertySetOutOfRangeException(
-        string message, object? actualValue, string propName)
-        : base(FormatMessageWithAll(message, propName, actualValue))
+    /// <param name="actualValue"></param>
+    public PropertySetOutOfRangeException(string message, string propName, object? actualValue)
+        : base(message, propName)
     {
         this.ActualValue = actualValue;
     }
@@ -85,10 +86,10 @@ public class PropertySetOutOfRangeException : PropertySetException
     /// message and inner exception and the name of the property that was set to an invalid value.
     /// </summary>
     /// <param name="message"></param>
-    /// <param name="innerException"></param>
     /// <param name="propName"></param>
-    public PropertySetOutOfRangeException(string message, Exception innerException, string propName)
-        : base(message, innerException, propName)
+    /// <param name="innerException"></param>
+    public PropertySetOutOfRangeException(string message, string propName, Exception innerException)
+        : base(message, propName, innerException)
     { }
 
     /// <summary>
@@ -97,12 +98,12 @@ public class PropertySetOutOfRangeException : PropertySetException
     /// property that was set to an invalid value.
     /// </summary>
     /// <param name="message"></param>
+    /// <param name="propName"></param>
     /// <param name="actualValue"></param>
     /// <param name="innerException"></param>
-    /// <param name="propName"></param>
     public PropertySetOutOfRangeException(
-        string message, object? actualValue, Exception innerException, string propName)
-        : base(FormatMessageWithAll(message, propName!, actualValue), innerException)
+        string message, string propName, object? actualValue, Exception innerException)
+        : base(message, propName, innerException)
     {
         this.ActualValue = actualValue;
     }
@@ -113,8 +114,7 @@ public class PropertySetOutOfRangeException : PropertySetException
     /// </summary>
     /// <param name="info"></param>
     /// <param name="context"></param>
-    protected PropertySetOutOfRangeException(SerializationInfo info, StreamingContext context)
-        : base(info, context)
+    protected PropertySetOutOfRangeException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
         ActualValue = info.GetValue(nameof(ActualValue), typeof(object));
     }
@@ -130,10 +130,4 @@ public class PropertySetOutOfRangeException : PropertySetException
         base.GetObjectData(info, context);
         info.AddValue(nameof(ActualValue), ActualValue);
     }
-
-    private static string FormatMessageWithAll(string message, string propName, object? actualValue)
-        => FormatMessageWithActualValue(FormatMessageWithPropertyName(message, propName), actualValue);
-
-    private static string FormatMessageWithActualValue(string message, object? actualValue)
-        => message + Environment.NewLine + $"Actual value was {actualValue ?? null}.";
 }
