@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup Label="Identity">
+		<ProductName>Rem.Core.ComponentModel</ProductName>
+		<RootNamespace>Rem.Core.ComponentModel</RootNamespace>
+		<Authors>Richard Munson</Authors>
+		<Version>0.1</Version>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Targets">
+		<TargetFrameworks>net461;netstandard2.0;netcoreapp3.0;netcoreapp3.1;net5.0</TargetFrameworks>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Documentation" Condition="'$(Configuration)' == 'Release'">
+		<DocumentationFile>bin\Release\Rem.Core.ComponentModel.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Language">
+		<LangVersion>10.0</LangVersion>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+</Project>
