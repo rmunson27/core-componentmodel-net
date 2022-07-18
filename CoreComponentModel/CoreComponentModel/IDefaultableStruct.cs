@@ -6,16 +6,17 @@ using System.Text;
 namespace Rem.Core.ComponentModel;
 
 /// <summary>
-/// An interface for structure types that can determine if they are the default value.
+/// An interface for structure types that contain a default value that should be considered a degenerate case (the
+/// analog of <see langword="null"/> for class types).
 /// </summary>
 /// <remarks>
 /// This interface should be implemented by structures with defaults for which certain functionality may not work as
-/// expected for other instances of the structure.
+/// intended for other instances of the structure.
 /// </remarks>
-public interface IDefaultDeterminableStruct
+public interface IDefaultableStruct
 {
     /// <summary>
-    /// Gets whether or not this struct value is default (not initialized).
+    /// Gets whether or not the current value is the default.
     /// </summary>
     public bool IsDefault { get; }
 }
