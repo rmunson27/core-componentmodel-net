@@ -1,7 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup Label="Identity">
-		<ProductName>Rem.Core.ComponentModel</ProductName>
+		<Product>Rem.Core.ComponentModel</Product>
+		<PackageId>Rem.Core.ComponentModel</PackageId>
+		<Summary>
+			A lightweight library of component-model-like types and functionality that are useful in common .NET
+			programming scenarios.
+		</Summary>
 		<Description>
 			A lightweight library of component-model-like types and functionality that are useful in common .NET
 			programming scenarios.
