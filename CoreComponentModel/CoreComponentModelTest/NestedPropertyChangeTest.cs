@@ -1,6 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rem.Core.ComponentModel;
-
 namespace Rem.CoreTest.ComponentModel;
 
 /// <summary>
