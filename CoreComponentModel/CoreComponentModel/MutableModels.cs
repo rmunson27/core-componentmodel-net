@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -70,6 +71,33 @@ public static class MutablePartialModelGetStateExtensions
             throw new InvalidMutableModelStateException(
                 $"{model.GetType()} instance was in an invalid state (its state did not represent an instance of"
                     + $" type {typeof(TImmutable)}).");
+        }
+    }
+
+    /// <summary>
+    /// Gets the state of the current mutable model instance in an <see langword="out"/> parameter.
+    /// </summary>
+    /// <typeparam name="TImmutable"></typeparam>
+    /// <param name="model"></param>
+    /// <param name="State">
+    /// An <see langword="out"/> parameter set to the state of the current instance if the method returns
+    /// <see langword="true"/>, or the default value of type <typeparamref name="TImmutable"/> if the method
+    /// returns <see langword="false"/>.
+    /// </param>
+    /// <returns>Whether or not the model was in a valid state.</returns>
+    public static bool TryGetCurrentState<TImmutable>(
+        this IMutablePartialModelGetState<TImmutable> model, [MaybeNullWhen(false)] out TImmutable State)
+        where TImmutable : notnull
+    {
+        if (model.IsInValidState)
+        {
+            State = model.CurrentState;
+            return true;
+        }
+        else
+        {
+            State = default;
+            return false;
         }
     }
 }
