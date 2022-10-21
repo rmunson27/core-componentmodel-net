@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rem.Core.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -85,7 +86,7 @@ public static class MutablePartialModelGetStateExtensions
     /// <returns>Whether or not the model was in a valid state.</returns>
     public static bool TryGetCurrentState<TImmutable>(
         this IMutablePartialModelGetState<TImmutable> model,
-        [MaybeNullWhen(false)] out TImmutable State)
+        [MaybeNullWhen(false), MaybeDefaultWhen(false)] out TImmutable State)
     {
         if (model.IsInValidState)
         {
