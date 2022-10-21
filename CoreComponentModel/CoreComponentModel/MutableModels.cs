@@ -14,7 +14,7 @@ namespace Rem.Core.ComponentModel;
 /// and that can be queried for a <typeparamref name="TImmutable"/> instance representing the current state.
 /// </summary>
 /// <typeparam name="TImmutable"></typeparam>
-public interface IMutableModelGetState<out TImmutable> where TImmutable : notnull
+public interface IMutableModelGetState<out TImmutable>
 {
     /// <summary>
     /// Gets a <typeparamref name="TImmutable"/> instance representing the current state of this object.
@@ -27,7 +27,7 @@ public interface IMutableModelGetState<out TImmutable> where TImmutable : notnul
 /// and that can have their state set to describe a given <typeparamref name="TImmutable"/> instance.
 /// </summary>
 /// <typeparam name="TImmutable"></typeparam>
-public interface IMutableModelSetState<in TImmutable> where TImmutable : notnull
+public interface IMutableModelSetState<in TImmutable>
 {
     /// <summary>
     /// Sets the current state of this object to describe the <typeparamref name="TImmutable"/> passed in.
@@ -44,7 +44,6 @@ public interface IMutableModelSetState<in TImmutable> where TImmutable : notnull
 /// <typeparam name="TImmutable"></typeparam>
 public interface IMutableModel<TImmutable>
     : IMutableModelGetState<TImmutable>, IMutableModelSetState<TImmutable>
-    where TImmutable : notnull
 {
     //
 }
@@ -64,7 +63,6 @@ public static class MutablePartialModelGetStateExtensions
     /// <param name="model"></param>
     /// <exception cref="InvalidMutableModelStateException"></exception>
     public static void ThrowIfNotInValidState<TImmutable>(this IMutablePartialModelGetState<TImmutable> model)
-        where TImmutable : notnull
     {
         if (!model.IsInValidState)
         {
@@ -86,8 +84,8 @@ public static class MutablePartialModelGetStateExtensions
     /// </param>
     /// <returns>Whether or not the model was in a valid state.</returns>
     public static bool TryGetCurrentState<TImmutable>(
-        this IMutablePartialModelGetState<TImmutable> model, [MaybeNullWhen(false)] out TImmutable State)
-        where TImmutable : notnull
+        this IMutablePartialModelGetState<TImmutable> model,
+        [MaybeNullWhen(false)] out TImmutable State)
     {
         if (model.IsInValidState)
         {
@@ -108,7 +106,7 @@ public static class MutablePartialModelGetStateExtensions
 /// in an invalid state not representing an instance of <typeparamref name="TImmutable"/>.
 /// </summary>
 /// <typeparam name="TImmutable"></typeparam>
-public interface IMutablePartialModelGetState<out TImmutable> where TImmutable : notnull
+public interface IMutablePartialModelGetState<out TImmutable>
 {
     /// <summary>
     /// Gets whether or not this object is in a valid state that represents an instance of
@@ -141,7 +139,6 @@ public interface IMutablePartialModelGetState<out TImmutable> where TImmutable :
 /// <typeparam name="TImmutable"></typeparam>
 public interface IMutablePartialModel<TImmutable>
     : IMutablePartialModelGetState<TImmutable>, IMutableModelSetState<TImmutable>
-    where TImmutable : notnull
 {
     //
 }
