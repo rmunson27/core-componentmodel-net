@@ -99,6 +99,17 @@ public static class MutablePartialModelGetStateExtensions
             return false;
         }
     }
+
+    /// <summary>
+    /// Gets the state of the current mutable model instance, or the default value of type
+    /// <typeparamref name="TImmutable"/> if the current instance is in an invalid state.
+    /// </summary>
+    /// <typeparam name="TImmutable"></typeparam>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    [return: MaybeNull, MaybeDefault]
+    public static TImmutable GetCurrentStateOrDefault<TImmutable>(this IMutablePartialModelGetState<TImmutable> model)
+        => model.IsInValidState ? model.CurrentState : default;
 }
 
 /// <summary>
@@ -125,19 +136,13 @@ public interface IMutablePartialModelGetState<out TImmutable>
     public TImmutable CurrentState { get; }
 
     /// <summary>
-    /// Gets a <typeparamref name="TImmutable"/> instance representing the current state of this object, or the
-    /// default instance of <typeparamref name="TImmutable"/>.
-    /// </summary>
-    [MaybeNull, MaybeDefault] public TImmutable CurrentStateOrDefault { get; }
-
-    /// <summary>
     /// Gets a <typeparamref name="TImmutable"/> instance representing the current state of this object, or
     /// <see langword="null"/> if this object is not in a valid state.
     /// </summary>
     [Obsolete(
         $"Will be removed in future version."
-            + $" Use {nameof(CurrentStateOrDefault)}"
-            + $" or {nameof(MutablePartialModelGetStateExtensions.TryGetCurrentState)} instead.")]
+            + $" Use {nameof(MutablePartialModelGetStateExtensions.GetCurrentStateOrDefault)} or"
+            + $" {nameof(MutablePartialModelGetStateExtensions.TryGetCurrentState)} instead.")]
     public TImmutable? CurrentStateOrNull { get; }
 }
 
