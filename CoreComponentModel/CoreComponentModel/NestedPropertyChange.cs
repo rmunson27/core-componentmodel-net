@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -142,7 +143,9 @@ public abstract class NestedPropertyChangeEventArgs : EventArgs
     /// name passed in.
     /// </summary>
     /// <param name="PropertyName"></param>
-    private protected NestedPropertyChangeEventArgs(string PropertyName) : this(ImmutableStack.Create(PropertyName)) { }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private protected NestedPropertyChangeEventArgs(string PropertyName)
+        : this(ImmutableStack.Create(PropertyName)) { }
 
     /// <summary>
     /// Constructs a new instance of the <see cref="NestedPropertyChangeEventArgs"/> class with the property
@@ -155,6 +158,7 @@ public abstract class NestedPropertyChangeEventArgs : EventArgs
     /// <exception cref="ArgumentException">
     /// <paramref name="PropertyPath"/> was empty.
     /// </exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private protected NestedPropertyChangeEventArgs(IEnumerable<string> PropertyPath)
         : this(ImmutableStack.CreateRange(PropertyPath.Reverse())) { }
 
@@ -169,6 +173,7 @@ public abstract class NestedPropertyChangeEventArgs : EventArgs
     /// <exception cref="ArgumentException">
     /// <paramref name="PropertyPath"/> was empty.
     /// </exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private protected NestedPropertyChangeEventArgs(ImmutableStack<string> PropertyPath)
     {
         if (PropertyPath is null) throw new ArgumentNullException(nameof(PropertyPath));
@@ -229,6 +234,7 @@ public abstract class NestedPropertyChangeEventArgs : EventArgs
             otherPropertyPath ?? throw new ArgumentNullException(nameof(otherPropertyPath)),
             PropertyPath);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool PathImpliesChangeOf(IEnumerable<string> lhs, IEnumerable<string> rhs)
         // If the left property path is a substack of the right, then the property change described by the left
         // path implies the change described by the right since the right path describes a child property of the
@@ -244,6 +250,7 @@ public abstract class NestedPropertyChangeEventArgs : EventArgs
     /// An integer describing a subset, superset or equality relationship between the paths, or <see langword="null"/>
     /// if the paths do not share such a relationship.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int? PartialComparePaths(IEnumerable<string> lhs, IEnumerable<string> rhs)
     {
         using var leftEnum = lhs.GetEnumerator();
