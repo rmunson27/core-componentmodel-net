@@ -64,6 +64,13 @@ public class NestedPropertyChangingEventArgs : NestedPropertyChangeEventArgs
 
     /// <summary>
     /// Constructs a new instance of the <see cref="NestedPropertyChangingEventArgs"/> class with the property
+    /// names passed in.
+    /// </summary>
+    /// <param name="PropertyNames"></param>
+    public NestedPropertyChangingEventArgs(params string[] PropertyNames) : base(PropertyNames) { }
+
+    /// <summary>
+    /// Constructs a new instance of the <see cref="NestedPropertyChangingEventArgs"/> class with the property
     /// path passed in.
     /// </summary>
     /// <param name="PropertyPath"></param>
@@ -100,6 +107,13 @@ public class NestedPropertyChangedEventArgs : NestedPropertyChangeEventArgs
     /// </summary>
     /// <param name="PropertyName"></param>
     public NestedPropertyChangedEventArgs(string PropertyName) : base(PropertyName) { }
+
+    /// <summary>
+    /// Constructs a new instance of the <see cref="NestedPropertyChangedEventArgs"/> class with the property
+    /// names passed in.
+    /// </summary>
+    /// <param name="PropertyNames"></param>
+    public NestedPropertyChangedEventArgs(params string[] PropertyNames) : base(PropertyNames) { }
 
     /// <summary>
     /// Constructs a new instance of the <see cref="NestedPropertyChangedEventArgs"/> class with the property
