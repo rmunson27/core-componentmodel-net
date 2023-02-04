@@ -99,5 +99,4 @@
 			<DependentUpon>TextTemplate1.tt</DependentUpon>
 		</Compile>
 	</ItemGroup>
-
 </Project>

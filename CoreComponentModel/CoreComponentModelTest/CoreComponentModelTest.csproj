@@ -19,5 +19,4 @@
   <ItemGroup>
     <ProjectReference Include="..\CoreComponentModel\CoreComponentModel.csproj" />
   </ItemGroup>
-
 </Project>
