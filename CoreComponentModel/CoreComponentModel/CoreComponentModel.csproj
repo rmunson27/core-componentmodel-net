@@ -9,7 +9,7 @@
 		<Authors>Richard E. Munson</Authors>
 		<Copyright>Richard E. Munson, 2022</Copyright>
 		<WebPage>https://github.com/rmunson27/core-componentmodel-net/</WebPage>
-		<Version>1.2.6</Version>
+		<Version>1.2.7</Version>
 		<PackageTags>componentmodel;utilities;nestedpropertychange;propertychange;comparison</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
@@ -17,9 +17,7 @@
 	<PropertyGroup Label="Outputs">
 		<TargetFrameworks>net461;netstandard2.0;netstandard2.1;net5.0;net6.0</TargetFrameworks>
 		<OutputType>Library</OutputType>
-		<PackageReleaseNotes>
-			Added "Try" method helper static class.
-		</PackageReleaseNotes>
+		<PackageReleaseNotes>Added .NET 6.0 target, and added basic `Try` method delegate types.</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<PropertyGroup Label="Documentation" Condition="'$(Configuration)' == 'Release'">
