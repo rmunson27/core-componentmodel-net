@@ -171,3 +171,48 @@ public static class Try
     }
     #endregion
 }
+
+/// <inheritdoc cref="TryFunc{TParameter, TSuccess}"/>
+public delegate bool TryFunc<TSuccess>([MaybeNullWhen(false), MaybeDefaultWhen(false)] out TSuccess success);
+
+/// <summary>
+/// A delegate representing a function that tries some failable operation, setting the
+/// <paramref name="success"/> <see langword="out"/> parameter to the result on success, and returning whether or not
+/// the operation succeeded.
+/// </summary>
+/// <inheritdoc cref="TryFunc2{TParameter, TSuccess, TFailure}"/>
+public delegate bool TryFunc<in TParameter, TSuccess>(
+    TParameter parameter, [MaybeNullWhen(false), MaybeDefaultWhen(false)] out TSuccess success);
+
+/// <inheritdoc cref="TryFunc2{TParameter, TSuccess, TFailure}"/>
+public delegate bool TryFunc2<TSuccess, TFailure>(
+    [MaybeNullWhen(false), MaybeDefaultWhen(false)] out TSuccess success,
+    [MaybeNullWhen(true), MaybeDefaultWhen(true)] out TFailure failure);
+
+/// <summary>
+/// A delegate representing a function that tries some failable operation, setting the
+/// <paramref name="success"/> <see langword="out"/> parameter to the result on success and
+/// <typeparamref name="TFailure"/> to an error value on failure, and returning whether or not the
+/// operation succeeded.
+/// </summary>
+/// <typeparam name="TParameter">The type of a parameter to the function.</typeparam>
+/// <typeparam name="TSuccess">
+/// The type of the <see langword="out"/> parameter that will be set on success.
+/// <para/>
+/// If this type is a defaultable struct or a nullable reference type, the <paramref name="success"/> parameter may be
+/// set to <see langword="default"/> or <see langword="null"/> when the operation fails.
+/// </typeparam>
+/// <typeparam name="TFailure">
+/// The type of the <see langword="out"/> parameter that will be set on failure.
+/// <para/>
+/// If this type is a defaultable struct or a nullable reference type, the <paramref name="failure"/> parameter may be
+/// set to <see langword="default"/> or <see langword="null"/> when the operation succeeds.
+/// </typeparam>
+/// <param name="parameter">A parameter to use in the operation.</param>
+/// <param name="success">The <see langword="out"/> parameter to set on success.</param>
+/// <param name="failure">The <see langword="out"/> parameter to set on failure.</param>
+/// <returns>Whether or not the operation succeeded.</returns>
+public delegate bool TryFunc2<in TParameter, TSuccess, TFailure>(
+    TParameter parameter,
+    [MaybeNullWhen(false), MaybeDefaultWhen(false)] out TSuccess success,
+    [MaybeNullWhen(true), MaybeDefaultWhen(true)] out TFailure failure);
