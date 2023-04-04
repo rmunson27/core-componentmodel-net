@@ -180,12 +180,12 @@ public delegate bool TryFunc<TSuccess>([MaybeNullWhen(false), MaybeDefaultWhen(f
 /// <paramref name="success"/> <see langword="out"/> parameter to the result on success, and returning whether or not
 /// the operation succeeded.
 /// </summary>
-/// <inheritdoc cref="TryFunc2{TParameter, TSuccess, TFailure}"/>
+/// <inheritdoc cref="TryFailFunc{TParameter, TSuccess, TFailure}"/>
 public delegate bool TryFunc<in TParameter, TSuccess>(
     TParameter parameter, [MaybeNullWhen(false), MaybeDefaultWhen(false)] out TSuccess success);
 
-/// <inheritdoc cref="TryFunc2{TParameter, TSuccess, TFailure}"/>
-public delegate bool TryFunc2<TSuccess, TFailure>(
+/// <inheritdoc cref="TryFailFunc{TParameter, TSuccess, TFailure}"/>
+public delegate bool TryFailFunc<TSuccess, TFailure>(
     [MaybeNullWhen(false), MaybeDefaultWhen(false)] out TSuccess success,
     [MaybeNullWhen(true), MaybeDefaultWhen(true)] out TFailure failure);
 
@@ -212,7 +212,7 @@ public delegate bool TryFunc2<TSuccess, TFailure>(
 /// <param name="success">The <see langword="out"/> parameter to set on success.</param>
 /// <param name="failure">The <see langword="out"/> parameter to set on failure.</param>
 /// <returns>Whether or not the operation succeeded.</returns>
-public delegate bool TryFunc2<in TParameter, TSuccess, TFailure>(
+public delegate bool TryFailFunc<in TParameter, TSuccess, TFailure>(
     TParameter parameter,
     [MaybeNullWhen(false), MaybeDefaultWhen(false)] out TSuccess success,
     [MaybeNullWhen(true), MaybeDefaultWhen(true)] out TFailure failure);
