@@ -16,6 +16,7 @@ namespace Rem.Core.ComponentModel.Logic;
 /// </remarks>
 public readonly record struct Ternary
 {
+    #region Constants
     /// <inheritdoc cref="Values.False"/>
     public static readonly Ternary False = new(Values.False);
 
@@ -34,6 +35,8 @@ public readonly record struct Ternary
     /// <see langword="true"/>, in that order.
     /// </remarks>
     public static readonly ReadOnlyCollection<Ternary> All = new(new[] { False, Unknown, True });
+    #endregion
+
     #region Properties
     /// <summary>
     /// Gets this instance as a <see cref="bool"/> value, treating <see cref="Unknown"/> <i>pessimistically</i>,
@@ -185,7 +188,7 @@ public readonly record struct Ternary
     /// Represents all values of the <see cref="Ternary"/> type as <see langword="enum"/> values.
     /// </summary>
     public enum Values : byte
-    { 
+    {
         /// <summary>
         /// Represents <see langword="false"/>.
         /// </summary>
