@@ -158,4 +158,22 @@ public class TernaryTest
             }
         }
     }
+
+    /// <summary>
+    /// Tests the <see cref="Ternary.Pessimistic"/> and <see cref="Ternary.Optimistic"/> properties.
+    /// </summary>
+    [TestMethod]
+    public void TestPessimisticAndOptimistic()
+    {
+        foreach (var (t, pessimistic, optimistic) in new (Ternary Ternary, bool Pessimistic, bool Optimistic)[]
+                 {
+                    (false, false, false),
+                    (Unknown, false, true),
+                    (true, true, true)
+                 })
+        {
+            Assert.AreEqual(optimistic, t.Optimistic, $"{t}.Optimistic");
+            Assert.AreEqual(pessimistic, t.Pessimistic, $"{t}.Pessimistic");
+        }
+    }
 }

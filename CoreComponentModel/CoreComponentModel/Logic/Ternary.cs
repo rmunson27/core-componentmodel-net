@@ -36,6 +36,18 @@ public readonly record struct Ternary
     public static readonly ReadOnlyCollection<Ternary> All = new(new[] { False, Unknown, True });
     #region Properties
     /// <summary>
+    /// Gets this instance as a <see cref="bool"/> value, treating <see cref="Unknown"/> <i>pessimistically</i>,
+    /// collapsing it to <see langword="false"/>.
+    /// </summary>
+    public bool Pessimistic => Value == Values.True;
+
+    /// <summary>
+    /// Gets this instance as a <see cref="bool"/> value, treating <see cref="Unknown"/> <i>optimistically</i>,
+    /// collapsing it to <see langword="true"/>.
+    /// </summary>
+    public bool Optimistic => Value != Values.False;
+
+    /// <summary>
     /// Determines if this instance is <see langword="true"/>.
     /// </summary>
     public bool IsTrue => Value == Values.True;
