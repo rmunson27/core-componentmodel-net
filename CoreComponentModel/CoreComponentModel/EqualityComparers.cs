@@ -25,4 +25,20 @@ public static class EqualityComparers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEqualityComparer<T> DefaultIfNull<T>(this IEqualityComparer<T>? comparer)
         => comparer ?? EqualityComparer<T>.Default;
+
+    /// <summary>
+    /// Gets the current <see cref="INestedEqualityComparer{TGeneric, TParameter}"/>, or
+    /// <see cref="NestedEqualityComparer{TGeneric, TParameter}.Default"/> if the current instance
+    /// is <see langword="null"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of value being compared.</typeparam>
+    /// <param name="comparer"></param>
+    /// <returns>
+    /// The current instance, or <see cref="NestedEqualityComparer{T}.Default"/> if the current instance
+    /// is <see langword="null"/>.
+    /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static INestedEqualityComparer<TGeneric, TParameter> DefaultIfNull<TGeneric, TParameter>(
+            this INestedEqualityComparer<TGeneric, TParameter>? comparer)
+        => comparer ?? NestedEqualityComparer<TGeneric, TParameter>.Default;
 }
