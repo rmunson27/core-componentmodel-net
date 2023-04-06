@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rem.Core.Collections;
+namespace Rem.Core.ComponentModel;
 
 /// <summary>
 /// An equality comparer that determines if instances of a generic type are equal based on an equality comparer
