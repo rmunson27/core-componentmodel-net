@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Immutable;
 using Rem.Core.ComponentModel.Logic;
 
 namespace Rem.CoreTest.ComponentModel.Logic;
@@ -16,12 +15,6 @@ public class TernaryTest
     private static readonly Ternary Unknown = Ternary.Unknown;
 
     /// <summary>
-    /// Contains all values of <see cref="Ternary"/>.
-    /// </summary>
-    private static readonly ImmutableArray<Ternary> All
-        = ImmutableArray.CreateRange(new Ternary[] { true, false, Unknown });
-
-    /// <summary>
     /// Tests the conjunction (&) operator.
     /// </summary>
     [TestMethod]
@@ -34,9 +27,9 @@ public class TernaryTest
             Unknown = new(True: Unknown, False: false, Unknown: Unknown),
         };
 
-        foreach (var left in All)
+        foreach (var left in Ternary.All)
         { 
-            foreach (var right in All)
+            foreach (var right in Ternary.All)
             {
                 Assert.AreEqual(table[left][right], left & right, $"{left} & {right}");
             }
@@ -56,9 +49,9 @@ public class TernaryTest
             Unknown = new(True: true, False: Unknown, Unknown: Unknown),
         };
 
-        foreach (var left in All)
+        foreach (var left in Ternary.All)
         { 
-            foreach (var right in All)
+            foreach (var right in Ternary.All)
             {
                 Assert.AreEqual(table[left][right], left | right, $"{left} | {right}");
             }
@@ -78,9 +71,9 @@ public class TernaryTest
             Unknown = new(True: Unknown, False: Unknown, Unknown: Unknown),
         };
 
-        foreach (var left in All)
+        foreach (var left in Ternary.All)
         { 
-            foreach (var right in All)
+            foreach (var right in Ternary.All)
             {
                 Assert.AreEqual(table[left][right], left ^ right, $"{left} ^ {right}");
             }

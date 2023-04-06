@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Rem.Core.Attributes;
 
 namespace Rem.Core.ComponentModel.Logic;
@@ -24,6 +25,15 @@ public readonly record struct Ternary
     /// <inheritdoc cref="Values.True"/>
     public static readonly Ternary True = new(Values.True);
 
+    /// <summary>
+    /// A collection of all possible <see cref="Ternary"/> values.
+    /// </summary>
+    /// <remarks>
+    /// The order of the elements of the array are chosen so that less surety is equated with a lower index.
+    /// As a result, the elements of the collection are <see langword="false"/>, <see cref="Unknown"/> and
+    /// <see langword="true"/>, in that order.
+    /// </remarks>
+    public static readonly ReadOnlyCollection<Ternary> All = new(new[] { False, Unknown, True });
     #region Properties
     /// <summary>
     /// Determines if this instance is <see langword="true"/>.
