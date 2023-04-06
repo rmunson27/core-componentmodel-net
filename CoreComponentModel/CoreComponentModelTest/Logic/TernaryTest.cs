@@ -10,11 +10,6 @@ namespace Rem.CoreTest.ComponentModel.Logic;
 public class TernaryTest
 {
     /// <summary>
-    /// The <see cref="Ternary.Unknown"/> value.
-    /// </summary>
-    private static readonly Ternary Unknown = Ternary.Unknown;
-
-    /// <summary>
     /// Tests the conjunction (&) operator.
     /// </summary>
     [TestMethod]
