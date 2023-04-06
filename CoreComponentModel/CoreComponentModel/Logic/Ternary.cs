@@ -65,7 +65,7 @@ public readonly record struct Ternary
     /// <summary>
     /// Gets an <see langword="enum"/> value uniquely representing this instance.
     /// </summary>
-    public Values Value { get; }
+    [NameableEnum] public Values Value { get; }
     #endregion
 
     /// <summary>
