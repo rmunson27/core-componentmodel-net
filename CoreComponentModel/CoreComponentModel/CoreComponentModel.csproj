@@ -9,7 +9,7 @@
 		<Authors>Richard E. Munson</Authors>
 		<Copyright>Richard E. Munson, 2022</Copyright>
 		<WebPage>https://github.com/rmunson27/core-componentmodel-net/</WebPage>
-		<Version>1.2.9</Version>
+		<Version>1.3</Version>
 		<PackageTags>componentmodel;utilities;nestedpropertychange;propertychange;comparison</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
@@ -17,7 +17,12 @@
 	<PropertyGroup Label="Outputs">
 		<TargetFrameworks>net461;netstandard2.0;netstandard2.1</TargetFrameworks>
 		<OutputType>Library</OutputType>
-		<PackageReleaseNotes>Added `Ternary` struct and removed .NET 5.0 target.</PackageReleaseNotes>
+		<PackageReleaseNotes>Added `Ternary.Optimistic` and `Ternary.Pessimistic` properties for use collapsing a `Ternary`  value to a `bool`.
+Removed `IMutablePartialModelGetState.CurrentStateOrNull` property (was obsolete).
+Added a `Prelude` class containing commonly used code elements that should be easily used from the top level.
+Added helper methods for defaulting a null `IEqualityComparer&lt;T&gt;` to the default.
+Added `INestedEquatable&lt;TGeneric, TParameter&gt; interface, `NestedEqualityComparer&lt;TGeneric, TParameter&gt;` type and analog of `EqualityComparer&lt;T&gt;.Default`.
+Corrected the namespace for nested equality types to `Rem.Core.ComponentModel` (was `Rem.Core.Collections`).</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<PropertyGroup Label="Documentation" Condition="'$(Configuration)' == 'Release'">
