@@ -26,7 +26,7 @@ public abstract class NestedEqualityComparer<TGeneric, TParameter>
     /// </summary>
     /// <remarks>
     /// This will use the implementation of <see cref="INestedEquatable{TGeneric, TParameter}"/> on
-    /// <see cref="TGeneric"/> in order to satisfy the requirements of a
+    /// <typeparamref name="TGeneric"/> in order to satisfy the requirements of a
     /// <see cref="NestedEqualityComparer{TGeneric, TParameter}"/> if possible, otherwise it will use the default
     /// <see cref="EqualityComparer{T}"/> for type <typeparamref name="TGeneric"/>,
     /// ignoring <typeparamref name="TParameter"/>.

@@ -134,16 +134,6 @@ public interface IMutablePartialModelGetState<out TImmutable>
     /// This object was not in a valid state.
     /// </exception>
     public TImmutable CurrentState { get; }
-
-    /// <summary>
-    /// Gets a <typeparamref name="TImmutable"/> instance representing the current state of this object, or
-    /// <see langword="null"/> if this object is not in a valid state.
-    /// </summary>
-    [Obsolete(
-        $"Will be removed in future version."
-            + $" Use {nameof(MutablePartialModelGetStateExtensions.GetCurrentStateOrDefault)} or"
-            + $" {nameof(MutablePartialModelGetStateExtensions.TryGetCurrentState)} instead.")]
-    public TImmutable? CurrentStateOrNull { get; }
 }
 
 /// <summary>

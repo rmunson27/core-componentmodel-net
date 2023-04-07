@@ -31,11 +31,15 @@ public static class EqualityComparers
     /// <see cref="NestedEqualityComparer{TGeneric, TParameter}.Default"/> if the current instance
     /// is <see langword="null"/>.
     /// </summary>
-    /// <typeparam name="T">The type of value being compared.</typeparam>
+    /// <typeparam name="TGeneric">The type of value being compared.</typeparam>
+    /// <typeparam name="TParameter">
+    /// A nested parameter for type <typeparamref name="TGeneric"/> that needs to be taken into account for
+    /// equality comparisons.
+    /// </typeparam>
     /// <param name="comparer"></param>
     /// <returns>
-    /// The current instance, or <see cref="NestedEqualityComparer{T}.Default"/> if the current instance
-    /// is <see langword="null"/>.
+    /// The current instance, or <see cref="NestedEqualityComparer{TGeneric, TParameter}.Default"/> if the current
+    /// instance is <see langword="null"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static INestedEqualityComparer<TGeneric, TParameter> DefaultIfNull<TGeneric, TParameter>(
