@@ -29,6 +29,8 @@ namespace Rem.Core.ComponentModel;
 /// </remarks>
 public static class Defaultable
 {
+#pragma warning disable IDE0079 // Suppression is needed to silence a packaging warning
+#pragma warning disable CS1573 // Parameters will be inherited via <inheritdoc/>
     /// <param name="value">A reference to the value of the parameter to check for invalid defaults.</param>
     /// <returns>A readonly reference to the value passed in.</returns>
     /// <inheritdoc cref="ThrowIfArgumentDefault"/>
@@ -45,6 +47,7 @@ public static class Defaultable
     /// <exception cref="ArgumentNullException">
     /// <typeparamref name="T"/> is a reference or nullable value type and <paramref name="value"/>
     /// was <see langword="null"/>.
+    /// </exception>
     /// <exception cref="StructArgumentDefaultException">
     /// <typeparamref name="T"/> is <see cref="ImmutableArray{T}"/> or a value type implementing
     /// <see cref="IDefaultableStruct"/> and <paramref name="value"/><c>.IsDefault</c> returns <see langword="true"/>.
@@ -52,6 +55,8 @@ public static class Defaultable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref readonly T ThrowIfArgumentDefault<T>([NotNull, NotDefault] in T? value, string paramName)
         => ref Defaultable<T>.DefaultInfo.ThrowIfArgumentDefault(value, paramName);
+#pragma warning restore CS1573
+#pragma warning restore IDE0079
 
     /// <summary>
     /// Throws an exception if the supplied <typeparamref name="T"/> is an invalid default value.
