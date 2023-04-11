@@ -14,9 +14,18 @@ namespace Rem.Core.ComponentModel;
 /// Helper methods for determining whether values are invalid defaults.
 /// </summary>
 /// <remarks>
-/// For the purposes of this class, the <see cref="ImmutableArray{T}"/> type will be treated as a defaultable struct
-/// (although it does not implement <see cref="IDefaultableStruct"/>), and its default value will be treated
-/// as invalid.
+/// This class will treat the following values as invalid defaults:
+/// <list type="bullet">
+/// <item><see langword="null"/> (whether a reference or a nullable value)</item>
+/// <item>
+/// Values of <see langword="struct"/> types implementing <see cref="IDefaultableStruct"/> with an <c>IsDefault</c>
+/// property that returns <see langword="true"/>
+/// </item>
+/// <item>
+/// <see cref="ImmutableArray{T}"/> values with an <c>IsDefault</c> property that returns <see langword="true"/>
+/// </item>
+/// </list>
+/// All the methods in this class will be inlined if possible.
 /// </remarks>
 public static class Defaultable
 {
