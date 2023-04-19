@@ -14,17 +14,17 @@ namespace Rem.Core.ComponentModel.Logic;
 /// The backing enum is implicitly convertible to <see cref="Ternary"/>.  The conversion will map all unnamed enum
 /// values to <see cref="Unknown"/>.
 /// </remarks>
-public readonly record struct Ternary
+public readonly record struct Ternary : IEnumeratedCaseUnion<Ternary, Ternary.Cases>
 {
     #region Constants
-    /// <inheritdoc cref="Values.False"/>
-    public static readonly Ternary False = new(Values.False);
+    /// <inheritdoc cref="Cases.False"/>
+    public static readonly Ternary False = new(Cases.False);
 
-    /// <inheritdoc cref="Values.Unknown"/>
-    public static readonly Ternary Unknown = new(Values.Unknown);
+    /// <inheritdoc cref="Cases.Unknown"/>
+    public static readonly Ternary Unknown = new(Cases.Unknown);
 
-    /// <inheritdoc cref="Values.True"/>
-    public static readonly Ternary True = new(Values.True);
+    /// <inheritdoc cref="Cases.True"/>
+    public static readonly Ternary True = new(Cases.True);
 
     /// <summary>
     /// A collection of all possible <see cref="Ternary"/> values.
@@ -42,42 +42,44 @@ public readonly record struct Ternary
     /// Gets this instance as a <see cref="bool"/> value, treating <see cref="Unknown"/> <i>pessimistically</i>,
     /// collapsing it to <see langword="false"/>.
     /// </summary>
-    public bool Pessimistic => Value == Values.True;
+    public bool Pessimistic => Case == Cases.True;
 
     /// <summary>
     /// Gets this instance as a <see cref="bool"/> value, treating <see cref="Unknown"/> <i>optimistically</i>,
     /// collapsing it to <see langword="true"/>.
     /// </summary>
-    public bool Optimistic => Value != Values.False;
+    public bool Optimistic => Case != Cases.False;
 
     /// <summary>
     /// Determines if this instance is <see langword="true"/>.
     /// </summary>
-    public bool IsTrue => Value == Values.True;
+    public bool IsTrue => Case == Cases.True;
 
     /// <summary>
     /// Determines if this instance is <see langword="false"/>.
     /// </summary>
-    public bool IsFalse => Value == Values.False;
+    public bool IsFalse => Case == Cases.False;
 
     /// <summary>
     /// Determines if this instance is <see cref="Unknown"/>.
     /// </summary>
-    public bool IsUnknown => Value == Values.Unknown;
+    public bool IsUnknown => Case == Cases.Unknown;
 
-    /// <summary>
-    /// Gets an <see langword="enum"/> value uniquely representing this instance.
-    /// </summary>
-    [NameableEnum] public Values Value { get; }
+    /// <inheritdoc cref="Case"/>
+    [Obsolete("Will be removed in an upcoming version. Use `Case` instead.")]
+    [NameableEnum] public Cases Value { get; }
+
+    /// <inheritdoc/>
+    [NameableEnum] public Cases Case { get; }
     #endregion
 
     /// <summary>
     /// Constructs this struct with the value passed in.
     /// </summary>
-    /// <param name="Value"></param>
-    private Ternary([NameableEnum] Values Value)
+    /// <param name="Case"></param>
+    private Ternary([NameableEnum] Cases Case)
     {
-        this.Value = Value;
+        this.Case = Case;
     }
 
     #region Equality
@@ -86,13 +88,13 @@ public readonly record struct Ternary
     /// </summary>
     /// <param name="other"></param>
     /// <returns></returns>
-    public bool Equals(Ternary other) => Value == other.Value;
+    public bool Equals(Ternary other) => Case == other.Case;
 
     /// <summary>
     /// Gets a hash code for this instance.
     /// </summary>
     /// <returns></returns>
-    public override int GetHashCode() => (int)Value;
+    public override int GetHashCode() => (int)Case;
     #endregion
 
     /// <summary>
@@ -108,7 +110,7 @@ public readonly record struct Ternary
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns></returns>
-    public static Ternary operator &(Ternary left, Ternary right) => new(left.Value & right.Value);
+    public static Ternary operator &(Ternary left, Ternary right) => new(left.Case & right.Case);
 
     /// <summary>
     /// Computes the logical disjunction of the two values passed in.
@@ -116,7 +118,7 @@ public readonly record struct Ternary
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns></returns>
-    public static Ternary operator |(Ternary left, Ternary right) => new(left.Value | right.Value);
+    public static Ternary operator |(Ternary left, Ternary right) => new(left.Case | right.Case);
 
     /// <summary>
     /// Computes the logical exclusive disjunction of the two values passed in.
@@ -132,22 +134,22 @@ public readonly record struct Ternary
 
     #region Conversions
     /// <summary>
-    /// Implicitly converts a <see cref="Ternary"/> to a <see cref="Values"/>.
+    /// Implicitly converts a <see cref="Ternary"/> to a <see cref="Cases"/>.
     /// </summary>
     /// <param name="t"></param>
-    public static implicit operator Values(Ternary t) => t.Value;
+    public static implicit operator Cases(Ternary t) => t.Case;
 
     /// <summary>
-    /// Implicitly converts a <see cref="Values"/> to a <see cref="Ternary"/>.
+    /// Implicitly converts a <see cref="Cases"/> to a <see cref="Ternary"/>.
     /// </summary>
     /// <remarks>
-    /// This method will return <see cref="Unknown"/> for any unnamed <see cref="Values"/> instance.
+    /// This method will return <see cref="Unknown"/> for any unnamed <see cref="Cases"/> instance.
     /// </remarks>
     /// <param name="value"></param>
-    public static implicit operator Ternary(Values value) => value switch
+    public static implicit operator Ternary(Cases value) => value switch
     {
-        Values.False => False,
-        Values.True => True,
+        Cases.False => False,
+        Cases.True => True,
         _ => Unknown,
     };
 
@@ -161,7 +163,7 @@ public readonly record struct Ternary
     /// Implicitly converts a <see cref="Ternary"/> to a nullable <see cref="bool"/>.
     /// </summary>
     /// <param name="t"></param>
-    public static implicit operator bool?(Ternary t) => t.Value == Unknown ? null : t.Value != Values.False;
+    public static implicit operator bool?(Ternary t) => t.Case == Unknown ? null : t.Case != Cases.False;
 
     /// <summary>
     /// Implicitly converts a <see cref="bool"/> to a <see cref="Ternary"/>.
@@ -170,16 +172,44 @@ public readonly record struct Ternary
     public static implicit operator Ternary(bool value) => value ? True : False;
 
     /// <summary>
+    /// Determines if this instance represents a known boolean value (i.e. is not <see cref="Unknown"/>), setting the
+    /// value in a <see langword="out"/> parameter if so.
+    /// </summary>
+    /// <remarks>
+    /// This method is equivalent to <see cref="IsBool(out bool)"/>.
+    /// </remarks>
+    /// <param name="knownCase"></param>
+    /// <returns></returns>
+    public bool IsKnown(out bool knownCase) => IsUnknown
+                                                    ? Try.Failure(out knownCase)
+                                                    : Try.Success(out knownCase, Case == Cases.True);
+
+    /// <summary>
     /// Determines if this instance represents a boolean value, setting the value in an <see langword="out"/>
     /// parameter if so.
     /// </summary>
+    /// <remarks>
+    /// This method is equivalent to <see cref="IsKnown(out bool)"/>.
+    /// </remarks>
     /// <param name="b"></param>
     /// <returns></returns>
-    public bool IsBool(out bool b) => IsUnknown ? Try.Failure(out b) : Try.Success(out b, Value != Values.False);
+    public bool IsBool(out bool b) => IsUnknown ? Try.Failure(out b) : Try.Success(out b, Case == Cases.True);
+
+    /// <summary>
+    /// Determines if this instance represents a known boolean value (i.e. is not <see cref="Unknown"/>).
+    /// </summary>
+    /// <remarks>
+    /// This method is equivalent to <see cref="IsBool()"/>.
+    /// </remarks>
+    /// <returns></returns>
+    public bool IsKnown() => !IsUnknown;
 
     /// <summary>
     /// Determines if this instance represents a boolean value.
     /// </summary>
+    /// <remarks>
+    /// This method is equivalent to <see cref="IsKnown()"/>.
+    /// </remarks>
     /// <returns></returns>
     public bool IsBool() => !IsUnknown;
     #endregion
@@ -187,7 +217,7 @@ public readonly record struct Ternary
     /// <summary>
     /// Represents all values of the <see cref="Ternary"/> type as <see langword="enum"/> values.
     /// </summary>
-    public enum Values : byte
+    public enum Cases : byte
     {
         /// <summary>
         /// Represents <see langword="false"/>.

@@ -101,10 +101,10 @@ public class TernaryTest
         /// </summary>
         /// <param name="left"></param>
         /// <returns></returns>
-        public Row this[Ternary left] => left.Value switch
+        public Row this[Ternary left] => left.Case switch
         { 
-            Ternary.Values.True => True,
-            Ternary.Values.False => False,
+            Ternary.Cases.True => True,
+            Ternary.Cases.False => False,
             _ => Unknown,
         };
 
@@ -137,10 +137,10 @@ public class TernaryTest
             /// </summary>
             /// <param name="right"></param>
             /// <returns></returns>
-            public Ternary this[Ternary right] => right.Value switch
+            public Ternary this[Ternary right] => right.Case switch
             {
-                Ternary.Values.False => False,
-                Ternary.Values.True => True,
+                Ternary.Cases.False => False,
+                Ternary.Cases.True => True,
                 _ => Unknown,
             };
 
