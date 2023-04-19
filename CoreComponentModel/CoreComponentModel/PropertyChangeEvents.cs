@@ -17,6 +17,8 @@ namespace Rem.Core.ComponentModel;
 /// a given type when the type (and therefore the property change notifications supported by the type) may not be
 /// known, for instance when designing a generic class.
 /// </remarks>
+[Obsolete("Will be removed in an upcoming version. "
+            + "Use `PropertyChangeNotifiers` and `PropertyChangeNotifiers<TNotifier>` instead.")]
 public static class PropertyChangeEvents
 {
     #region Notification Subscription And Unsubscription
@@ -402,6 +404,7 @@ public static class PropertyChangeEvents
 /// functionality of the <see cref="PropertyChangeEvents"/> class.
 /// </remarks>
 /// <typeparam name="T">The type for which helper functionality is provided.</typeparam>
+#pragma warning disable CS0618 // Need this for now for the class that will be removed - then can be stripped out
 internal static class PropertyChangeEvents<T>
 {
     #region Fields
@@ -409,6 +412,8 @@ internal static class PropertyChangeEvents<T>
     /// A value representing the property change notifications supported by type <typeparamref name="T"/>.
     /// </summary>
     [NameableEnum] public static readonly PropertyChangeNotifications SupportedNotifications;
+
+    public static readonly PropertyChangeNotifierType Supported;
 
     public static readonly bool IsValueType;
     #endregion
@@ -421,22 +426,27 @@ internal static class PropertyChangeEvents<T>
 
         // Determine which property change notifications are supported by the type and save on the class
         SupportedNotifications = PropertyChangeNotifications.None;
+        Supported = PropertyChangeNotifierType.None;
 
         if (typeof(INotifyPropertyChanging).IsAssignableFrom(type))
         {
             SupportedNotifications |= PropertyChangeNotifications.PropertyChanging;
+            Supported |= PropertyChangeNotifierType.PropertyChanging;
         }
         if (typeof(INotifyPropertyChanged).IsAssignableFrom(type))
         {
             SupportedNotifications |= PropertyChangeNotifications.PropertyChanged;
+            Supported |= PropertyChangeNotifierType.PropertyChanged;
         }
         if (typeof(INotifyNestedPropertyChanging).IsAssignableFrom(type))
         {
             SupportedNotifications |= PropertyChangeNotifications.NestedPropertyChanging;
+            Supported |= PropertyChangeNotifierType.NestedPropertyChanging;
         }
         if (typeof(INotifyNestedPropertyChanged).IsAssignableFrom(type))
         {
             SupportedNotifications |= PropertyChangeNotifications.NestedPropertyChanged;
+            Supported |= PropertyChangeNotifierType.NestedPropertyChanged;
         }
     }
     #endregion
@@ -460,6 +470,7 @@ public static class PropertyChangeNotificationsMethods
 /// <summary>
 /// Represents the various types of property change notifications supported by a given type.
 /// </summary>
+[Obsolete("Will be removed in an upcoming version. Use `PropertyChangeNotifierType` instead.")]
 [Flags]
 public enum PropertyChangeNotifications : byte
 {
@@ -496,3 +507,4 @@ public enum PropertyChangeNotifications : byte
     /// </remarks>
     NestedPropertyChanged = PropertyChanged | 8,
 }
+#pragma warning restore CS0618

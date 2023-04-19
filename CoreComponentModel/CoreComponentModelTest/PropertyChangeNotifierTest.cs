@@ -1,69 +1,61 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rem.CoreTest.ComponentModel;
 
-#pragma warning disable CS0618 // Obsolete, but still needs to be tested since hasn't been removed yet
-
 /// <summary>
-/// Tests the <see cref="PropertyChangeEvents{T}"/> class.
+/// Tests the <see cref="PropertyChangeNotifier"/> and <see cref="PropertyChangeNotifier{TNotifier}"/> classes.
 /// </summary>
 [TestClass]
-public class PropertyChangeEventsTest
+public class PropertyChangeNotifierTest
 {
     #region Tests
     #region Metadata
     /// <summary>
-    /// Tests the <see cref="PropertyChangeEvents.GetSupportedBy{T}"/> method.
+    /// Tests the <see cref="PropertyChangeNotifier{TNotifier}.Type"/>
     /// </summary>
     [TestMethod]
-    public void TestGetSupportedBy()
+    public void TestType()
     {
-        Assert.AreEqual(PropertyChangeNotifications.None, PropertyChangeEvents.GetSupportedBy<NonNotifier>());
+        Assert.AreEqual(PropertyChangeNotifierType.None,
+                        PropertyChangeNotifier<NonNotifier>.Type);
 
-        Assert.AreEqual(
-            PropertyChangeNotifications.PropertyChanging, PropertyChangeEvents.GetSupportedBy<ChangingOnlyNotifier>());
-        Assert.AreEqual(
-            PropertyChangeNotifications.PropertyChanged, PropertyChangeEvents.GetSupportedBy<ChangedOnlyNotifier>());
+        Assert.AreEqual(PropertyChangeNotifierType.PropertyChanging,
+                        PropertyChangeNotifier<ChangingOnlyNotifier>.Type);
 
-        Assert.AreEqual(
-            PropertyChangeNotifications.PropertyChanging | PropertyChangeNotifications.PropertyChanged,
-            PropertyChangeEvents.GetSupportedBy<ChangeNotifier>());
+        Assert.AreEqual(PropertyChangeNotifierType.PropertyChanged,
+                        PropertyChangeNotifier<ChangedOnlyNotifier>.Type);
 
-        Assert.AreEqual(
-            PropertyChangeNotifications.NestedPropertyChanging,
-            PropertyChangeEvents.GetSupportedBy<NestedChangingOnlyNotifier>());
-        Assert.AreEqual(
-            PropertyChangeNotifications.NestedPropertyChanged,
-            PropertyChangeEvents.GetSupportedBy<NestedChangedOnlyNotifier>());
+        Assert.AreEqual(PropertyChangeNotifierType.PropertyChange,
+                        PropertyChangeNotifier<ChangeNotifier>.Type);
 
-        Assert.AreEqual(
-            PropertyChangeNotifications.NestedPropertyChanging | PropertyChangeNotifications.PropertyChanged,
-            PropertyChangeEvents.GetSupportedBy<NestedChangingAndChangedNotifier>());
-        Assert.AreEqual(
-            PropertyChangeNotifications.PropertyChanging | PropertyChangeNotifications.NestedPropertyChanged,
-            PropertyChangeEvents.GetSupportedBy<NestedChangedAndChangingNotifier>());
+        Assert.AreEqual(PropertyChangeNotifierType.NestedPropertyChanging,
+                        PropertyChangeNotifier<NestedChangingOnlyNotifier>.Type);
 
-        Assert.AreEqual(
-            PropertyChangeNotifications.NestedPropertyChanging | PropertyChangeNotifications.NestedPropertyChanged,
-            PropertyChangeEvents.GetSupportedBy<NestedChangeNotifier>());
+        Assert.AreEqual(PropertyChangeNotifierType.NestedPropertyChanged,
+                        PropertyChangeNotifier<NestedChangedOnlyNotifier>.Type);
+
+        Assert.AreEqual(PropertyChangeNotifierType.PreNestedPropertyChange,
+                        PropertyChangeNotifier<NestedChangingAndChangedNotifier>.Type);
+
+        Assert.AreEqual(PropertyChangeNotifierType.PostNestedPropertyChange,
+                        PropertyChangeNotifier<NestedChangedAndChangingNotifier>.Type);
+
+        Assert.AreEqual(PropertyChangeNotifierType.NestedPropertyChange,
+                        PropertyChangeNotifier<NestedChangeNotifier>.Type);
     }
     #endregion
 
     #region Non-Nested
     /// <summary>
-    /// Tests the <see cref="PropertyChangeEvents"/> subscription, unsubscription and shuffling behavior for objects
+    /// Tests the <see cref="PropertyChangeNotifier"/> subscription, unsubscription and shuffling behavior for objects
     /// that do not implement any property change notifications.
     /// </summary>
     [TestMethod]
     public void TestNonNotifier() => RunSubscriptionTest(new NonNotifier(), PropertyChangeEventFlags.None);
 
     /// <summary>
-    /// Tests the <see cref="PropertyChangeEvents"/> subscription, unsubscription and shuffling behavior for objects
+    /// Tests the <see cref="PropertyChangeNotifier"/> subscription, unsubscription and shuffling behavior for objects
     /// that implement only non-nested property changing notifications.
     /// </summary>
     [TestMethod]
@@ -71,7 +63,7 @@ public class PropertyChangeEventsTest
         => RunSubscriptionTest(new ChangingOnlyNotifier(), PropertyChangeEventFlags.PropertyChanging);
 
     /// <summary>
-    /// Tests the <see cref="PropertyChangeEvents"/> subscription, unsubscription and shuffling behavior for objects
+    /// Tests the <see cref="PropertyChangeNotifier"/> subscription, unsubscription and shuffling behavior for objects
     /// that implement only non-nested property changed notifications.
     /// </summary>
     [TestMethod]
@@ -79,7 +71,7 @@ public class PropertyChangeEventsTest
         => RunSubscriptionTest(new ChangedOnlyNotifier(), PropertyChangeEventFlags.PropertyChanged);
 
     /// <summary>
-    /// Tests the <see cref="PropertyChangeEvents"/> subscription, unsubscription and shuffling behavior for objects
+    /// Tests the <see cref="PropertyChangeNotifier"/> subscription, unsubscription and shuffling behavior for objects
     /// that implement both non-nested property change notifications.
     /// </summary>
     [TestMethod]
@@ -91,7 +83,7 @@ public class PropertyChangeEventsTest
 
     #region Nested
     /// <summary>
-    /// Tests the <see cref="PropertyChangeEvents"/> subscription, unsubscription and shuffling behavior for objects
+    /// Tests the <see cref="PropertyChangeNotifier"/> subscription, unsubscription and shuffling behavior for objects
     /// that implement only nested and non-nested property changed notifications.
     /// </summary>
     [TestMethod]
@@ -101,7 +93,7 @@ public class PropertyChangeEventsTest
             PropertyChangeEventFlags.PropertyChanged | PropertyChangeEventFlags.NestedPropertyChanged);
 
     /// <summary>
-    /// Tests the <see cref="PropertyChangeEvents"/> subscription, unsubscription and shuffling behavior for objects
+    /// Tests the <see cref="PropertyChangeNotifier"/> subscription, unsubscription and shuffling behavior for objects
     /// that implement only nested and non-nested property changing notifications.
     /// </summary>
     [TestMethod]
@@ -111,7 +103,7 @@ public class PropertyChangeEventsTest
             PropertyChangeEventFlags.PropertyChanging | PropertyChangeEventFlags.NestedPropertyChanging);
 
     /// <summary>
-    /// Tests the <see cref="PropertyChangeEvents"/> subscription, unsubscription and shuffling behavior for objects
+    /// Tests the <see cref="PropertyChangeNotifier"/> subscription, unsubscription and shuffling behavior for objects
     /// that implement only nested and non-nested property changing and non-nested property changed notifications.
     /// </summary>
     [TestMethod]
@@ -122,7 +114,7 @@ public class PropertyChangeEventsTest
                 | PropertyChangeEventFlags.NestedPropertyChanging);
 
     /// <summary>
-    /// Tests the <see cref="PropertyChangeEvents"/> subscription, unsubscription and shuffling behavior for objects
+    /// Tests the <see cref="PropertyChangeNotifier"/> subscription, unsubscription and shuffling behavior for objects
     /// that implement only nested and non-nested property changed and non-nested property changing notifications.
     /// </summary>
     [TestMethod]
@@ -133,7 +125,7 @@ public class PropertyChangeEventsTest
                 | PropertyChangeEventFlags.NestedPropertyChanged);
 
     /// <summary>
-    /// Tests the <see cref="PropertyChangeEvents"/> subscription, unsubscription and shuffling behavior for objects
+    /// Tests the <see cref="PropertyChangeNotifier"/> subscription, unsubscription and shuffling behavior for objects
     /// that implement all available nested and non-nested property change notifications.
     /// </summary>
     [TestMethod]
@@ -384,7 +376,7 @@ public class PropertyChangeEventsTest
 
         public void SubscribeTo<T>(
             T value, ChangeSubscriptionOption option = ChangeSubscriptionOption.NestedChangeOnly)
-            => PropertyChangeEvents.SubscribeTo(
+            => PropertyChangeNotifier.SubscribeTo(
                 value,
                 NestedPropertyChangingEventHandler, PropertyChangingEventHandler,
                 option.HasOption(ChangeSubscriptionOption.NestedChangingOnly),
@@ -392,7 +384,7 @@ public class PropertyChangeEventsTest
                 option.HasOption(ChangeSubscriptionOption.NestedChangedOnly));
 
         public void UnsubscribeFrom<T>(T value)
-            => PropertyChangeEvents.UnsubscribeFrom(
+            => PropertyChangeNotifier.UnsubscribeFrom(
                 value,
                 NestedPropertyChangingEventHandler, PropertyChangingEventHandler,
                 NestedPropertyChangedEventHandler, PropertyChangedEventHandler);
@@ -401,7 +393,7 @@ public class PropertyChangeEventsTest
             T value,
             TestNotifications other,
             ChangeSubscriptionOption option = ChangeSubscriptionOption.NestedChangeOnly)
-            => PropertyChangeEvents.Shuffle(
+            => PropertyChangeNotifier.Shuffle(
                 value,
                 NestedPropertyChangingEventHandler, other.NestedPropertyChangingEventHandler,
                 PropertyChangingEventHandler, other.PropertyChangingEventHandler,
@@ -414,5 +406,3 @@ public class PropertyChangeEventsTest
     #endregion
     #endregion
 }
-
-#pragma warning restore CS0618
