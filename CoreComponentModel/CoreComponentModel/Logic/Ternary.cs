@@ -42,35 +42,36 @@ public readonly record struct Ternary : IEnumeratedCaseUnion<Ternary, Ternary.Ca
     /// Gets this instance as a <see cref="bool"/> value, treating <see cref="Unknown"/> <i>pessimistically</i>,
     /// collapsing it to <see langword="false"/>.
     /// </summary>
-    public bool Pessimistic => Case == Cases.True;
+    public bool Pessimistic => _storedCase == StoredTrue;
 
     /// <summary>
     /// Gets this instance as a <see cref="bool"/> value, treating <see cref="Unknown"/> <i>optimistically</i>,
     /// collapsing it to <see langword="true"/>.
     /// </summary>
-    public bool Optimistic => Case != Cases.False;
+    public bool Optimistic => _storedCase != StoredFalse;
 
     /// <summary>
     /// Determines if this instance is <see langword="true"/>.
     /// </summary>
-    public bool IsTrue => Case == Cases.True;
+    public bool IsTrue => _storedCase == StoredTrue;
 
     /// <summary>
     /// Determines if this instance is <see langword="false"/>.
     /// </summary>
-    public bool IsFalse => Case == Cases.False;
+    public bool IsFalse => _storedCase == StoredFalse;
 
     /// <summary>
     /// Determines if this instance is <see cref="Unknown"/>.
     /// </summary>
-    public bool IsUnknown => Case == Cases.Unknown;
+    public bool IsUnknown => _storedCase == StoredUnknown;
 
     /// <inheritdoc cref="Case"/>
     [Obsolete("Will be removed in an upcoming version. Use `Case` instead.")]
     [NameableEnum] public Cases Value { get; }
 
     /// <inheritdoc/>
-    [NameableEnum] public Cases Case { get; }
+    [NameableEnum] public Cases Case => unchecked((Cases)(_storedCase - NegativeUnknown));
+    private readonly Cases _storedCase;
     #endregion
 
     /// <summary>
@@ -79,7 +80,7 @@ public readonly record struct Ternary : IEnumeratedCaseUnion<Ternary, Ternary.Ca
     /// <param name="Case"></param>
     private Ternary([NameableEnum] Cases Case)
     {
-        this.Case = Case;
+        _storedCase = unchecked((Cases)(Case - Cases.Unknown));
     }
 
     #region Equality
@@ -88,13 +89,13 @@ public readonly record struct Ternary : IEnumeratedCaseUnion<Ternary, Ternary.Ca
     /// </summary>
     /// <param name="other"></param>
     /// <returns></returns>
-    public bool Equals(Ternary other) => Case == other.Case;
+    public bool Equals(Ternary other) => _storedCase == other._storedCase;
 
     /// <summary>
     /// Gets a hash code for this instance.
     /// </summary>
     /// <returns></returns>
-    public override int GetHashCode() => (int)Case;
+    public override int GetHashCode() => _storedCase.GetHashCode();
     #endregion
 
     /// <summary>
@@ -163,7 +164,19 @@ public readonly record struct Ternary : IEnumeratedCaseUnion<Ternary, Ternary.Ca
     /// Implicitly converts a <see cref="Ternary"/> to a nullable <see cref="bool"/>.
     /// </summary>
     /// <param name="t"></param>
-    public static implicit operator bool?(Ternary t) => t.Case == Unknown ? null : t.Case != Cases.False;
+    public static implicit operator bool?(Ternary t) => t._storedCase == StoredUnknown
+                                                            ? null
+                                                            : t._storedCase != StoredFalse;
+
+    /// <summary>
+    /// Explicitly converts a <see cref="Ternary"/> to a <see cref="bool"/>.
+    /// </summary>
+    /// <param name="t"></param>
+    /// <exception cref="InvalidCastException"><paramref name="t"/> was <see cref="Unknown"/>.</exception>
+    public static explicit operator bool(Ternary t)
+        => t._storedCase == StoredUnknown
+            ? throw new InvalidCastException($"Cannot convert \"{nameof(Unknown)}\" to a known boolean.")
+            : t._storedCase != StoredFalse;
 
     /// <summary>
     /// Implicitly converts a <see cref="bool"/> to a <see cref="Ternary"/>.
@@ -182,7 +195,7 @@ public readonly record struct Ternary : IEnumeratedCaseUnion<Ternary, Ternary.Ca
     /// <returns></returns>
     public bool IsKnown(out bool knownCase) => IsUnknown
                                                     ? Try.Failure(out knownCase)
-                                                    : Try.Success(out knownCase, Case == Cases.True);
+                                                    : Try.Success(out knownCase, _storedCase == StoredTrue);
 
     /// <summary>
     /// Determines if this instance represents a boolean value, setting the value in an <see langword="out"/>
@@ -193,7 +206,7 @@ public readonly record struct Ternary : IEnumeratedCaseUnion<Ternary, Ternary.Ca
     /// </remarks>
     /// <param name="b"></param>
     /// <returns></returns>
-    public bool IsBool(out bool b) => IsUnknown ? Try.Failure(out b) : Try.Success(out b, Case == Cases.True);
+    public bool IsBool(out bool b) => IsUnknown ? Try.Failure(out b) : Try.Success(out b, _storedCase == StoredTrue);
 
     /// <summary>
     /// Determines if this instance represents a known boolean value (i.e. is not <see cref="Unknown"/>).
@@ -213,6 +226,16 @@ public readonly record struct Ternary : IEnumeratedCaseUnion<Ternary, Ternary.Ca
     /// <returns></returns>
     public bool IsBool() => !IsUnknown;
     #endregion
+
+    /// <summary>
+    /// Negative of unknown - needed since there is no '+' operator on Cases.
+    /// </summary>
+    private const Cases NegativeUnknown = (Cases)(Cases.True - (Cases.Unknown - 1));
+
+    // Stored values of the cases - need "Unknown" to be the default to match "bool?"
+    private const Cases StoredFalse = (Cases)unchecked(Cases.False - Cases.Unknown);
+    private const Cases StoredUnknown = (Cases)unchecked(Cases.Unknown - Cases.Unknown);
+    private const Cases StoredTrue = (Cases)unchecked(Cases.True - Cases.Unknown);
 
     /// <summary>
     /// Represents all values of the <see cref="Ternary"/> type as <see langword="enum"/> values.

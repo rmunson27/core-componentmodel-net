@@ -23,7 +23,7 @@ public class TernaryTest
         };
 
         foreach (var left in Ternary.All)
-        { 
+        {
             foreach (var right in Ternary.All)
             {
                 Assert.AreEqual(table[left][right], left & right, $"{left} & {right}");
@@ -45,7 +45,7 @@ public class TernaryTest
         };
 
         foreach (var left in Ternary.All)
-        { 
+        {
             foreach (var right in Ternary.All)
             {
                 Assert.AreEqual(table[left][right], left | right, $"{left} | {right}");
@@ -67,7 +67,7 @@ public class TernaryTest
         };
 
         foreach (var left in Ternary.All)
-        { 
+        {
             foreach (var right in Ternary.All)
             {
                 Assert.AreEqual(table[left][right], left ^ right, $"{left} ^ {right}");
@@ -76,10 +76,49 @@ public class TernaryTest
     }
 
     /// <summary>
+    /// Ensures that the default <see cref="Ternary"/> is the unknown, so that the default logically matches the
+    /// default of <see cref="bool"/><c>?</c>.
+    /// </summary>
+    [TestMethod]
+    public void TestDefault()
+    {
+        Assert.AreEqual(default, Ternary.Unknown);
+    }
+
+    /// <summary>
+    /// Tests conversions to and from <see cref="Ternary"/> types.
+    /// </summary>
+    [TestMethod]
+    public void TestConversion()
+    {
+        Assert.IsTrue((bool)Ternary.True);
+        Assert.IsFalse((bool)Ternary.False);
+        Assert.ThrowsException<InvalidCastException>(() => (bool)Ternary.Unknown);
+
+        Assert.IsTrue((bool?)Ternary.True);
+        Assert.IsFalse((bool?)Ternary.False);
+        Assert.IsNull((bool?)Ternary.Unknown);
+
+        Assert.AreEqual(true, (Ternary)Ternary.Cases.True);
+        Assert.AreEqual(false, (Ternary)Ternary.Cases.False);
+        Assert.AreEqual(Unknown, (Ternary)Ternary.Cases.Unknown);
+
+        const Ternary.Cases unnamed = (Ternary.Cases)6;
+
+        // Control to ensure that `unnamed` is really unnamed
+        Assert.AreNotEqual(Ternary.Cases.True, unnamed);
+        Assert.AreNotEqual(Ternary.Cases.False, unnamed);
+        Assert.AreNotEqual(Ternary.Cases.Unknown, unnamed);
+
+        // Ensure unnamed values are mapped to "Unknown"
+        Assert.AreEqual(Unknown, (Ternary)unnamed);
+    }
+
+    /// <summary>
     /// Represents a truth table.
     /// </summary>
     private sealed class TruthTable
-    { 
+    {
         /// <summary>
         /// Gets the row of the truth table for <see cref="Ternary.True"/> on the left-hand side.
         /// </summary>
@@ -102,7 +141,7 @@ public class TernaryTest
         /// <param name="left"></param>
         /// <returns></returns>
         public Row this[Ternary left] => left.Case switch
-        { 
+        {
             Ternary.Cases.True => True,
             Ternary.Cases.False => False,
             _ => Unknown,
