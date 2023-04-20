@@ -8,6 +8,7 @@ namespace Rem.Core.ComponentModel;
 /// <summary>
 /// An exception thrown when a property is set to an invalid value.
 /// </summary>
+[Obsolete("Will be removed in an upcoming version. Use ArgumentException.")]
 public class PropertySetException : InvalidOperationException
 {
     /// <summary>
