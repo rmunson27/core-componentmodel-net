@@ -403,7 +403,7 @@ public static class PropertyChangeNotifier
 public static class PropertyChangeNotifier<TNotifier>
 {
     /// <summary>
-    /// Gets a value describing the property change notifications <typeparamref name="T"/> supports.
+    /// Gets a value describing the property change notifications <typeparamref name="TNotifier"/> supports.
     /// </summary>
     public static PropertyChangeNotifierType Type => PropertyChangeEvents<TNotifier>.Supported;
 }
@@ -411,8 +411,8 @@ public static class PropertyChangeNotifier<TNotifier>
 /// <summary>
 /// Represents a valid set of property change notifications that can be implemented by a type.
 /// </summary>
+[CaseUnion<PropertyChangeNotifierType.Cases>]
 public readonly record struct PropertyChangeNotifierType
-    : IEnumeratedCaseUnion<PropertyChangeNotifierType, PropertyChangeNotifierType.Cases>
 {
     #region Constants
     /// <inheritdoc cref="Cases.None"/>
@@ -462,8 +462,11 @@ public readonly record struct PropertyChangeNotifierType
     #endregion
 
     #region Properties
-    /// <inheritdoc/>
-    public Cases Case { get; }
+    /// <summary>
+    /// Represents the case of this instance as an <see langword="enum"/> value.
+    /// </summary>
+    [CaseUnion.Case]
+    [NameableEnum] public Cases Case { get; }
     #endregion
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -558,16 +561,18 @@ public readonly record struct PropertyChangeNotifierType
     /// </summary>
     /// <param name="value"></param>
     /// <exception cref="InvalidEnumArgumentException"><paramref name="value"/> was unnamed.</exception>
+    [CaseUnion.FromCaseCast]
     public static implicit operator PropertyChangeNotifierType(Cases value)
         => value.IsDefined()
             ? new(value)
-            : throw EnumeratedCaseUnion.InvalidCase<PropertyChangeNotifierType>();
+            : throw CaseUnion.InvalidCase<PropertyChangeNotifierType>();
 
     /// <summary>
     /// Implicitly converts a <see cref="PropertyChangeNotifierType"/> to the <see cref="Cases"/> value
     /// representing its case.
     /// </summary>
     /// <param name="t"></param>
+    [CaseUnion.ToCaseCast]
     public static implicit operator Cases(PropertyChangeNotifierType t) => t.Case;
 
     /// <summary>
@@ -595,7 +600,7 @@ public readonly record struct PropertyChangeNotifierType
     /// <see langword="enum"/> value.
     /// </summary>
     [Flags]
-    [UnionCaseEnumerator]
+    [CaseUnion.Cases]
     public enum Cases : byte
     {
         /// <summary>

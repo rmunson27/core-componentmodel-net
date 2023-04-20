@@ -14,7 +14,8 @@ namespace Rem.Core.ComponentModel.Logic;
 /// The backing enum is implicitly convertible to <see cref="Ternary"/>.  The conversion will map all unnamed enum
 /// values to <see cref="Unknown"/>.
 /// </remarks>
-public readonly record struct Ternary : IEnumeratedCaseUnion<Ternary, Ternary.Cases>
+[CaseUnion<Ternary.Cases>]
+public readonly record struct Ternary
 {
     #region Constants
     /// <inheritdoc cref="Cases.False"/>

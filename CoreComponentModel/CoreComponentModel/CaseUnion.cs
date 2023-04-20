@@ -84,10 +84,10 @@ public static class CaseUnion
 }
 
 /// <summary>
-/// Indicates that the targeted definition has an <see langword="enum"/> type nested within it that enumerates all
+/// Indicates that the targeted definition is a union of cases labeled by <typeparamref name="TCases"/> values.
 /// the cases of the type.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface,
                 AllowMultiple = false,
                 Inherited = true)]
-public sealed class CaseUnionAttribute : Attribute { }
+public sealed class CaseUnionAttribute<TCases> : Attribute where TCases : struct, Enum { }
