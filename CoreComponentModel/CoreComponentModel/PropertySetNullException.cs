@@ -11,6 +11,7 @@ namespace Rem.Core.ComponentModel;
 /// An exception thrown when a property is set to <see langword="null"/> when not permitted by the current state of
 /// the object.
 /// </summary>
+[Obsolete("Will be removed in an upcoming version. Use `ArgumentNullException`.")]
 public class PropertySetNullException : PropertySetException
 {
     /// <summary>

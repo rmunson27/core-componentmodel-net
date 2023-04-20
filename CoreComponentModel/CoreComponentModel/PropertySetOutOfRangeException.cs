@@ -11,6 +11,7 @@ namespace Rem.Core.ComponentModel;
 /// An exception thrown when a property is set to a value outside the range of acceptable values for the current
 /// state of the object.
 /// </summary>
+[Obsolete("Will be removed in an upcoming version. Use `ArgumentOutOfRangeException`.")]
 public class PropertySetOutOfRangeException : PropertySetException
 {
     /// <summary>

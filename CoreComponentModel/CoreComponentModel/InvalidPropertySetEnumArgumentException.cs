@@ -10,6 +10,7 @@ namespace Rem.Core.ComponentModel;
 /// <summary>
 /// An exception thrown when a property is set to an invalid enum value.
 /// </summary>
+[Obsolete("Will be removed in an upcoming version. Use `InvalidEnumArgumentException`.")]
 public class InvalidEnumPropertySetException : PropertySetException
 {
     /// <summary>

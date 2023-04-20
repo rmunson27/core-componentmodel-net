@@ -11,6 +11,7 @@ namespace Rem.Core.ComponentModel;
 /// An exception thrown when a <see langword="struct"/> property is set to the default value of its type when that
 /// is not permitted by the current state of the object.
 /// </summary>
+[Obsolete("Will be removed in an upcoming version. Use `StructArgumentDefaultException`.")]
 public class StructPropertySetDefaultException : PropertySetException
 {
     /// <summary>
