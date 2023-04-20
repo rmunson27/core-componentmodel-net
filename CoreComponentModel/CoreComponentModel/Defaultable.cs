@@ -125,8 +125,8 @@ file static class Defaultable<T>
             if (typeof(IDefaultableStruct).IsAssignableFrom(typeof(T)))
             {
                 DefaultInfo = (DefaultInfo<T>)typeof(DefaultableInfo<>).MakeGenericType(typeof(T))
-                                                                       .GetConstructor(new Type[] { })
-                                                                       .Invoke(new object[] { });
+                                                                       .GetConstructor(Array.Empty<Type>())!
+                                                                       .Invoke(Array.Empty<object>());
             }
             else if (typeof(T).IsGenericType)
             {
@@ -137,16 +137,16 @@ file static class Defaultable<T>
                     var param = typeof(T).GetGenericArguments()[0];
 #pragma warning disable CS8619 // Will always be nullable info
                     DefaultInfo = (DefaultInfo<T?>)typeof(NullableValInfo<>).MakeGenericType(param)
-                                                                            .GetConstructor(new Type[] { })
-                                                                            .Invoke(new object[] { });
+                                                                            .GetConstructor(Array.Empty<Type>())!
+                                                                            .Invoke(Array.Empty<object>());
 #pragma warning restore CS8619
                 }
                 else if (genericTypeDefinition == typeof(ImmutableArray<>))
                 {
                     var param = typeof(T).GetGenericArguments()[0];
                     DefaultInfo = (DefaultInfo<T>)typeof(ImmutableArrayInfo<>).MakeGenericType(param)
-                                                                              .GetConstructor(new Type[] { })
-                                                                              .Invoke(new object[] { });
+                                                                              .GetConstructor(Array.Empty<Type>())!
+                                                                              .Invoke(Array.Empty<object>());
                 }
                 else DefaultInfo = new NoDefaultDefaultableInfo<T>();
             }
@@ -155,8 +155,8 @@ file static class Defaultable<T>
         else
         {
             DefaultInfo = (DefaultInfo<T>)typeof(NullableRefInfo<>).MakeGenericType(typeof(T))
-                                                                   .GetConstructor(new Type[] { })
-                                                                   .Invoke(new object[] { });
+                                                                   .GetConstructor(Array.Empty<Type>())!
+                                                                   .Invoke(Array.Empty<object>());
         }
     }
 }
