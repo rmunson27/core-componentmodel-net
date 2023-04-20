@@ -600,7 +600,6 @@ public readonly record struct PropertyChangeNotifierType
     /// <see langword="enum"/> value.
     /// </summary>
     [Flags]
-    [CaseUnion.Cases]
     public enum Cases : byte
     {
         /// <summary>
