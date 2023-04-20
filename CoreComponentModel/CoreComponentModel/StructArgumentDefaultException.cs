@@ -22,14 +22,14 @@ public class StructArgumentDefaultException : ArgumentNullException
     /// <summary>
     /// Constructs a new instancce of the <see cref="StructArgumentDefaultException"/> class.
     /// </summary>
-    public StructArgumentDefaultException() : base(null, "Argument was default.") { }
+    public StructArgumentDefaultException() : base(null, "Value cannot be default.") { }
 
     /// <summary>
     /// Constructs a new instance of the <see cref="StructArgumentDefaultException"/> class with a default error
     /// message including the name of the parameter that caused the exception.
     /// </summary>
     /// <param name="paramName"></param>
-    public StructArgumentDefaultException(string paramName)
+    public StructArgumentDefaultException(string? paramName)
         : base(null, FormatMessageWithParamName("Value cannot be default.", paramName))
     { }
 
@@ -49,7 +49,9 @@ public class StructArgumentDefaultException : ArgumentNullException
     /// </summary>
     /// <param name="message"></param>
     /// <param name="innerException"></param>
-    public StructArgumentDefaultException(string message, Exception innerException) : base(message, innerException) { }
+    public StructArgumentDefaultException(string? message, Exception? innerException)
+	    : base(message, innerException)
+    { }
 
     /// <summary>
     /// Constructs a new instance of the <see cref="StructArgumentDefaultException"/> from the serialization info and

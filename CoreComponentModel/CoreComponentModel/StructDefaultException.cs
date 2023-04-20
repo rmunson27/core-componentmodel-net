@@ -25,7 +25,7 @@ public class StructDefaultException : Exception
     /// Constructs a new instance of the <see cref="StructDefaultException"/> class with the specified error message.
     /// </summary>
     /// <param name="message"></param>
-    public StructDefaultException(string message) : base(message) { }
+    public StructDefaultException(string? message) : base(message) { }
 
     /// <summary>
     /// Constructs a new instance of the <see cref="StructDefaultException"/> class with the specified error message
@@ -33,7 +33,7 @@ public class StructDefaultException : Exception
     /// </summary>
     /// <param name="message"></param>
     /// <param name="innerException"></param>
-    public StructDefaultException(string message, Exception? innerException) : base(message, innerException) { }
+    public StructDefaultException(string? message, Exception? innerException) : base(message, innerException) { }
 
     /// <summary>
     /// Constructs a new instance of the <see cref="StructDefaultException"/> class from the serialization data passed
