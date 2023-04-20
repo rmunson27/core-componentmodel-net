@@ -71,7 +71,7 @@ public readonly record struct Ternary
     [NameableEnum] public Cases Value { get; }
 
     /// <inheritdoc/>
-    [NameableEnum] public Cases Case => unchecked((Cases)(_storedCase - NegativeUnknown));
+    [NameableEnum] public Cases Case => unchecked((Cases)((byte)_storedCase + Cases.Unknown));
     private readonly Cases _storedCase;
     #endregion
 
@@ -228,14 +228,9 @@ public readonly record struct Ternary
     public bool IsBool() => !IsUnknown;
     #endregion
 
-    /// <summary>
-    /// Negative of unknown - needed since there is no '+' operator on Cases.
-    /// </summary>
-    private const Cases NegativeUnknown = (Cases)(Cases.True - (Cases.Unknown - 1));
-
     // Stored values of the cases - need "Unknown" to be the default to match "bool?"
     private const Cases StoredFalse = (Cases)unchecked(Cases.False - Cases.Unknown);
-    private const Cases StoredUnknown = (Cases)unchecked(Cases.Unknown - Cases.Unknown);
+    private const Cases StoredUnknown = 0;
     private const Cases StoredTrue = (Cases)unchecked(Cases.True - Cases.Unknown);
 
     /// <summary>
@@ -251,11 +246,11 @@ public readonly record struct Ternary
         /// <summary>
         /// Represents an unknown.
         /// </summary>
-        Unknown = 135, // Closest possible to 128 with half of bits set
+        Unknown = 1,
 
         /// <summary>
         /// Represents <see langword="true"/>.
         /// </summary>
-        True = 255,
+        True = 3,
     }
 }
